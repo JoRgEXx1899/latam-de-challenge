@@ -49,12 +49,12 @@ def list_blobs(bucket_name: str, folder_name: str) -> list:
     return blobs
 
 
-def read_json_to_dataframe()-> pd.DataFrame:
-    """This function will read the json file from the raw data folder in
-    the Google Cloud Storage bucket, create the dataframes and returns it.
+def get_gcs_path() -> str:
+    """This function will return the path to the file in the Google Cloud 
+    Storage bucket.
 
     Returns:
-        pd.DataFrame: A pandas dataframe with the data from the json file.
+        str: A string with the path to the file in the Google Cloud Storage bucket.
     """
     log_in_gcp_clients()
     # List all the blobs in the raw data folder
@@ -65,17 +65,35 @@ def read_json_to_dataframe()-> pd.DataFrame:
         # Get the name of the file
         print("The file name is "+os.path.basename(blob.name))
         file_name = os.path.basename(blob.name).split(".")[0]
-        # Create the dataframe from the raw data
+        # Create the file path in the Google Cloud Storage bucket to the file
         # Read the json file from the blob in bucket
         # If the file name is not empty
         if file_name != "":
-            print("READING FILE! ----------------------")
-            # Read the json file from the blob in bucket
-            df = pd.read_json(f"gs://{bucket_name}/{blob.name}", lines=True)
-            print(df.info())
-            print("FILE READED! ----------------------")
-            return df
+            print("BUILDING FILE PATH! ----------------------")
+            # Build the file path in the Google Cloud Storage bucket to the file
+            file_path_gcs = f"gs://{bucket_name}/{blob.name}"
+            return file_path_gcs
+
+
+def read_gcs_json_to_dataframe(file_path: str) -> pd.DataFrame:
+    """This function will read the json file from the raw data folder in
+    the Google Cloud Storage bucket, create the dataframes and returns it.
+
+      Args:
+        file_path (str): the file path to the json file in the Google Cloud Storage bucket.
+
+    Returns:
+        pd.DataFrame: A pandas dataframe with the data from the json file.
+    
+    """
+    log_in_gcp_clients()
+    print("READING FILE! ----------------------")
+    # Read the json file from the blob in bucket
+    df = pd.read_json(file_path, lines=True)
+    print(df.info())
+    print("FILE READED! ----------------------")
+    return df
+
 
 if __name__ == "__main__":
-    read_json_to_dataframe()
-    
+    read_gcs_json_to_dataframe()
