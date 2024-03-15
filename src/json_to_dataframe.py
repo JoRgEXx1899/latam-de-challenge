@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 from dotenv import load_dotenv
-from google.cloud import bigquery, storage
+from google.cloud import storage
 
 # At first, we need to load the .env file to get the environment variables
 # From .env file
@@ -21,15 +21,12 @@ storage.blob._MAX_MULTIPART_SIZE = 5 * 1024 * 1024  # 5 MB
 
 
 def log_in_gcp_clients() -> None:
-    """Log in to the BigQuery and GCP clients and store them in global variables.
+    """Log in to the GCP client of storage and set it in global variables.
     """
-    # Log in to the BigQuery API
-    global bq_client, gcs_client
-    bq_client = bigquery.Client(project_id, credentials_json)
-
+    global gcs_client
     # Log in the GCP bucket
     gcs_client = storage.Client(project_id, credentials_json,)
-    print("Logged in to GCP BigQuery and GCS clients")
+    print("Logged in to GCP / GCS client")
 
 
 def list_blobs(bucket_name: str, folder_name: str) -> list:
