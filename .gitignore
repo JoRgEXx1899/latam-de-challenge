@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#Files json and parquet
+src/files/*.json
+src/files/*.parquet
 # C extensions
 *.so
 

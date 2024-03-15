@@ -1,1 +1,9 @@
 memory-profiler==0.61.0
+ujson==5.8.0
+pandas==2.0.2
+pyarrow==15.0.1
+gcloud==0.18.3
+python-dotenv==1.0.1
+gcsfs==2024.2.0
+emoji==2.8.0
+memory-profiler==0.61.0
