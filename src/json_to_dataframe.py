@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import pandas as pd
 from dotenv import load_dotenv
@@ -81,15 +82,35 @@ def read_gcs_json_to_dataframe(file_path: str) -> pd.DataFrame:
 
     Returns:
         pd.DataFrame: A pandas dataframe with the data from the json file.
-    
+
     """
     log_in_gcp_clients()
     print("READING FILE! ----------------------")
     # Read the json file from the blob in bucket
     df = pd.read_json(file_path, lines=True)
-    print(df.info())
     print("FILE READED! ----------------------")
     return df
+
+
+def download_file(file_path_gcs, directory_path: Path) -> Path:
+    """A function which downloads the blob file into the path defined. 
+    If the file already exists, it doesn't download it.
+    Returns the path where the file is downloaded
+
+    Args:
+        blob (blob): A blob from GCS to download.
+        directory_path (Path): A path in the project to storage files temporaly downloaded.
+
+    Returns:
+        Path: the path where the file is downloaded
+    """
+    # Download the file from the Google Cloud Storage bucket at the file path
+    blob = storage.Blob.from_string(file_path_gcs, client=gcs_client)
+    local_path = os.path.join(directory_path, os.path.basename(blob.name))
+    # If the file already exists don't download it
+    if not os.path.exists(local_path):
+        blob.download_to_filename(local_path, checksum=None)
+    return local_path
 
 
 if __name__ == "__main__":
