@@ -6,4 +6,3 @@ gcloud==0.18.3
 python-dotenv==1.0.1
 gcsfs==2024.2.0
 emoji==2.8.0
-memory-profiler==0.61.0
