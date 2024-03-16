@@ -5,6 +5,20 @@ import pandas as pd
 
 
 def q1_time(file_path: str) -> List[Tuple[datetime.date, str]]:
+    """This function will read the json or parquet file with pandas. Date is 
+    converted to a date object and the user_name of user is used as user 
+    key. Then rows are counted through the 'dates' column to find the top 10 
+    dates with more tweets. Then the user with more tweets on each date is
+    determined by the count of tweets on each date.
+    
+    Args:
+        file_path (str): file path to the json file or parquet file in local 
+        file system. Also, it can be a file path to the file in the Google Cloud 
+        Storage bucket.
+    Returns:
+        List[Tuple[str, int]]: Top 10 dates of tweets and user with more 
+        tweets per day.
+    """
     # Read the json file from the blob in bucket
     if file_path.endswith(".json"):
         df = pd.read_json(file_path, lines=True)

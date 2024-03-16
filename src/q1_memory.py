@@ -5,6 +5,19 @@ import ujson as json
 
 
 def q1_memory(file_path: str) -> List[Tuple[datetime.date, str]]:
+    """This function will read the json line by line and iterate through the 
+    'date' and 'user' column to find the top 10 days with more tweets and the user 
+    with more tweets on each day and their frequency in the tweets.
+    Works by using a nested dictionary to count the date and user frequency.
+    Date is converted to a date object and the user_name of user is used as user 
+    key.
+
+    Args:
+        file_path (str): file path to the json file in local file system. 
+    Returns:
+        List[Tuple[str, int]]: Top 10 dates of tweets and user with more 
+        tweets per day.
+    """
     # Create a nested dictionary to count users by date
     users_per_date = defaultdict(lambda: defaultdict(int))
     # Open file in read mode
@@ -29,7 +42,8 @@ def q1_memory(file_path: str) -> List[Tuple[datetime.date, str]]:
         main_user = max(user_count, key=user_count.get)
         # Add the date and the main user to the list
         dates_main_users.append((date, main_user))
-    # Sort the list by user count in descending order and take the first 10 entries by slicing the list
+    # Sort the list by user count in descending order and take the first 10
+    # entries by slicing the list
     result = sorted(
         dates_main_users, key=lambda x: users_per_date[x[0]][x[1]], reverse=True)[:10]
     # sort the result by date ascending
